@@ -56,7 +56,7 @@
                 android:layout_margin="17dp">
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/userEnterName"
+                    android:id="@+id/userEnterName_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Name"
@@ -71,7 +71,6 @@
                 android:layout_marginHorizontal="13dp"
                 android:layout_marginBottom="13dp"
                 android:letterSpacing="0.5"
-                android:onClick="invokeName"
                 android:text="@string/Start_Button"
                 android:textSize="17sp"
                 android:textStyle="bold" />
