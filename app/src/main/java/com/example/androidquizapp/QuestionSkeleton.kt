@@ -1,5 +1,8 @@
 package com.example.androidquizapp
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+
 data class QuestionSkeleton(
     val id : Int,
     val question : String,
