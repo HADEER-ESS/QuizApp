@@ -10,6 +10,7 @@ import com.example.androidquizapp.databinding.ActivityQuizQuestionBinding
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import org.json.JSONObject
+import java.io.File
 import java.io.InputStream
 import java.lang.Exception
 import java.nio.charset.Charset
@@ -31,14 +32,19 @@ class QuizQuestionActivity : AppCompatActivity() {
         binding.answerBtn.setOnClickListener {
             ++increment
             binding.quizQuestionTv.text = questions[increment].question
+            binding.countryImageIv.setImageResource(resources.getIdentifier(questions[increment].image , "drawable" , "com.example.androidquizapp"))
             binding.optionOneTv.text = questions[increment].optionOne
             binding.optionTwoTv.text = questions[increment].optionTwo
             binding.optionThreeTv.text = questions[increment].optionThree
             binding.optionFourTv.text = questions[increment].optionFour
         }
         binding.quizQuestionTv.text = questions[increment].question
-//        var imageId = ContextCompat.getDrawable(this ,questions[increment].image)
-//        binding.countryImageIv.setImageResource(imageId)
+//        val img = questions[increment].image
+        val image = resources.getIdentifier(questions[increment].image ,
+            "drawable" , "com.example.androidquizapp")
+        Log.i("Image" , "int $image")
+        Log.i("Image222" , "int ${R.drawable.ic_egypt}")
+        binding.countryImageIv.setImageResource(image)
         binding.optionOneTv.text = questions[increment].optionOne
         binding.optionTwoTv.text = questions[increment].optionTwo
         binding.optionThreeTv.text = questions[increment].optionThree
