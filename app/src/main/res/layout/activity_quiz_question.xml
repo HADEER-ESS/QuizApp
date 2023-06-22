@@ -25,10 +25,10 @@
     <ImageView
         android:id="@+id/country_image_iv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="110dp"
         android:layout_gravity="center_horizontal"
         android:contentDescription="County Flag"
-        android:layout_marginVertical="23dp"
+        android:layout_marginVertical="13dp"
         tools:src="@drawable/ic_argintena" />
     <LinearLayout
         android:layout_width="match_parent"

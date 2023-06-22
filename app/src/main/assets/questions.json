@@ -2,7 +2,7 @@
     {
       "id" : 1,
       "question" : "What country does this flag belong to?",
-      "image" : "R.drawable.ic_egypt",
+      "image" : "ic_egypt",
       "optionOne" : "Syria",
       "optionTwo" : "Egypt",
       "optionThree" : "Yaman",
@@ -12,7 +12,7 @@
     {
       "id" : 2,
       "question" : "What country does this flag belong to?",
-      "image" : "R.drawable.ic_singapore",
+      "image" : "ic_singapore",
       "optionOne" : "Malaysia",
       "optionTwo" : "China",
       "optionThree" : "Singapore",
@@ -22,7 +22,7 @@
     {
       "id" : 3,
       "question" : "What country does this flag belong to?",
-      "image" : "R.drawable.ic_azerbaijan",
+      "image" : "ic_azerbaijan",
       "optionOne" : "Armenia",
       "optionTwo" : "Turkiye",
       "optionThree" : "Singapore",
@@ -32,7 +32,7 @@
     {
       "id" : 4,
       "question" : "What country does this flag belong to?",
-      "image" : "R.drawable.ic_palestine",
+      "image" : "ic_palestine",
       "optionOne" : "Palestine",
       "optionTwo" : "Jordan",
       "optionThree" : "Kuwait",
@@ -42,7 +42,7 @@
     {
       "id" : 5,
       "question" : "What country does this flag belong to?",
-      "image" : "R.drawable.ic_japan",
+      "image" : "ic_japan",
       "optionOne" : "South Korea",
       "optionTwo" : "Japan",
       "optionThree" : "Indonesia",
@@ -52,7 +52,7 @@
     {
       "id" : 6,
       "question" : "What country does this flag belong to?",
-      "image" : "R.drawable.ic_sweden",
+      "image" : "ic_sweden",
       "optionOne" : "Norway",
       "optionTwo" : "Finland",
       "optionThree" : "Sweden",
@@ -62,7 +62,7 @@
     {
       "id" : 7,
       "question" : "What country does this flag belong to?",
-      "image" : "R.drawable.ic_argintena",
+      "image" : "ic_argintena",
       "optionOne" : "Argentina",
       "optionTwo" : "Uruguay",
       "optionThree" : "Brazil",
