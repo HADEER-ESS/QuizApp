@@ -48,6 +48,7 @@
           android:layout_weight="4"
           android:progress="0"
           android:indeterminate="false"
+          android:progressTint="@color/Light_Blue"
           android:maxHeight="50dp"/>
       <TextView
           android:id="@+id/progress_count_tv"
@@ -65,6 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="13dp"
         tools:text="Argantina"
+        android:textColor="@color/grey"
         android:background="@drawable/default_option_container"
         android:textAlignment="center"
         android:textSize="23sp"
@@ -78,11 +80,13 @@
         android:background="@drawable/default_option_container"
         android:textAlignment="center"
         android:textSize="23sp"
+        android:textColor="@color/grey"
         android:padding="13dp"/>
     <TextView
         android:id="@+id/option_three_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/grey"
         android:layout_margin="13dp"
         tools:text="Argantina"
         android:background="@drawable/default_option_container"
@@ -95,6 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="13dp"
         tools:text="Argantina"
+        android:textColor="@color/grey"
         android:background="@drawable/default_option_container"
         android:textAlignment="center"
         android:textSize="23sp"

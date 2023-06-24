@@ -1,22 +1,26 @@
 package com.example.androidquizapp
 
-import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.example.androidquizapp.databinding.ActivityMainBinding
 import com.example.androidquizapp.databinding.ActivityQuizQuestionBinding
 import com.google.gson.Gson
-import com.google.gson.JsonObject
-import org.json.JSONObject
-import java.io.File
 import java.io.InputStream
 import java.lang.Exception
-import java.nio.charset.Charset
 
-class QuizQuestionActivity : AppCompatActivity() {
-    var renderedData :ArrayList<JSONObject> = ArrayList()
+class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener{
+    private var increment = 1;
+    private var questionsLength :Int? = null
+    private var questions : Array<QuestionSkeleton>? = null
+    private var selectedOptionPosition : Int = 0
+    var correctedAnswerCount: Int = 0;
 
     private lateinit var binding: ActivityQuizQuestionBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,65 +28,103 @@ class QuizQuestionActivity : AppCompatActivity() {
         binding = ActivityQuizQuestionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var questions = Gson().fromJson(getJSONFromAssetsFolder() , Array<QuestionSkeleton>::class.java)
+        //parse JSON using Gson method
+        questions = Gson().fromJson(getJSONFromAssetsFolder() , Array<QuestionSkeleton>::class.java)
 
-        val questionsLength :Int = questions.size
+        questionsLength = questions?.size
 
-        var increment = 0
-        binding.answerBtn.setOnClickListener {
-            ++increment
-            binding.quizQuestionTv.text = questions[increment].question
-            binding.countryImageIv.setImageResource(resources.getIdentifier(questions[increment].image , "drawable" , "com.example.androidquizapp"))
-            binding.optionOneTv.text = questions[increment].optionOne
-            binding.optionTwoTv.text = questions[increment].optionTwo
-            binding.optionThreeTv.text = questions[increment].optionThree
-            binding.optionFourTv.text = questions[increment].optionFour
+        displayQuestionOnScreen(questions!![increment-1])
+//        onOptionClicked()
+        binding.optionOneTv.setOnClickListener {
+            onSelectedOptionClicked((it as TextView), 1)
         }
-        binding.quizQuestionTv.text = questions[increment].question
-//        val img = questions[increment].image
-        val image = resources.getIdentifier(questions[increment].image ,
-            "drawable" , "com.example.androidquizapp")
-        Log.i("Image" , "int $image")
-        Log.i("Image222" , "int ${R.drawable.ic_egypt}")
-        binding.countryImageIv.setImageResource(image)
-        binding.optionOneTv.text = questions[increment].optionOne
-        binding.optionTwoTv.text = questions[increment].optionTwo
-        binding.optionThreeTv.text = questions[increment].optionThree
-        binding.optionFourTv.text = questions[increment].optionFour
+        binding.optionTwoTv.setOnClickListener {
+            onSelectedOptionClicked((it as TextView), 2)
+        }
+        binding.optionThreeTv.setOnClickListener {
+            onSelectedOptionClicked((it as TextView), 3)
+        }
+        binding.optionFourTv.setOnClickListener {
+            onSelectedOptionClicked((it as TextView), 4)
+        }
 
-
-//        try {
-//            val obj = JSONObject(loadJSONFromAsset())
-//            val questions = obj.getJSONArray("questions")
-//
-//            for(i in 0 until questions.length()){
-//                val questionInfo = questions.getJSONObject(i)
-//                renderedData.add(questionInfo)
-////                println("QUESTION... $questionInfo")
-//            }
-//        }catch (ex :Exception){
-//            ex.printStackTrace()
-//        }
     }
 
-    //Load JSON
-//    private fun loadJSONFromAsset():String{
-//        var json :String? = null
-//
-//        try {
-//            val inputStream :InputStream = assets.open("questions.json")
-//            val sizeData = inputStream.available()
-//            val buffer = ByteArray(sizeData)
-//            val charset :Charset = Charsets.UTF_8
-//            inputStream.read(buffer)
-//            inputStream.close()
-//            json = String(buffer , charset)
-//        }catch (ex : Exception){
-//            ex.printStackTrace()
-//        }
-//        return json!!
+    private fun displayQuestionOnScreen(question:QuestionSkeleton) {
+        val intent = Intent(this , ResultScreenActivity::class.java)
+        binding.quizQuestionTv.text = question.question
+
+        val image = resources.getIdentifier(
+            question.image,
+            "drawable", "com.example.androidquizapp"
+        )
+        binding.countryImageIv.setImageResource(image)
+        binding.progressBarPb.progress = increment
+        binding.progressCountTv.text = "$increment / ${binding.progressBarPb.max}"
+        binding.optionOneTv.text = question.optionOne
+        binding.optionTwoTv.text = question.optionTwo
+        binding.optionThreeTv.text = question.optionThree
+        binding.optionFourTv.text = question.optionFour
+
+        binding.answerBtn.setOnClickListener {
+            if(selectedOptionPosition == question.correctAnswer){
+                correctedAnswerCount += 1
+                Log.i("Correct" , "YESSSSS $correctedAnswerCount")
+            }
+            if(increment == questionsLength){
+                binding.answerBtn.text = "FINISH"
+                intent.putExtra("correctAnswers" , correctedAnswerCount)
+                startActivity(intent)
+            }else{
+                ++increment
+                displayQuestionOnScreen(questions!![increment-1])
+                binding.answerBtn.text = "SUBMIT"
+            }
+
+        }
+    }
+
+//    private fun correctAnswer (tv: TextView){
+//        tv.background = ContextCompat.getDrawable(
+//            this ,
+//            R.drawable.correct_answer_option
+//        )
 //    }
 
+    //OnOptionClicked change the style of it
+    private fun defaultOptionClicked() {
+        var optionsArray= ArrayList<TextView>()
+
+        binding.optionOneTv.let {
+            optionsArray.add(0, it)
+        }
+        binding.optionTwoTv.let {
+            optionsArray.add(1, it)
+        }
+        binding.optionThreeTv.let {
+            optionsArray.add(2, it)
+        }
+        binding.optionFourTv.let {
+            optionsArray.add(3, it)
+        }
+
+        for(option in optionsArray){
+            option.setTextColor(Color.parseColor("#7A8089"))
+            option.typeface = Typeface.DEFAULT
+            option.background = ContextCompat.getDrawable(
+                this, R.drawable.default_option_container
+            )
+        }
+    }
+    private fun onSelectedOptionClicked (tv : TextView , selectedOptionNum : Int){
+        defaultOptionClicked()
+
+        selectedOptionPosition = selectedOptionNum
+
+        tv.setTextColor(Color.parseColor("#363A43"))
+        tv.setTypeface(tv.typeface , Typeface.BOLD)
+        tv.background = ContextCompat.getDrawable(this , R.drawable.selected_option_container)
+    }
 
     //Read JSON as STRING from Asset Folder
     private fun getJSONFromAssetsFolder ():String{
@@ -97,8 +139,7 @@ class QuizQuestionActivity : AppCompatActivity() {
         return json!!
     }
 
-    //Parse JSON using Gson
-//    fun parseJSON() {
-//        Gson().fromJson(getJSONFromAssetsFolder(), QuestionSkeleton::class.java)
-//    }
+    override fun onClick(view: View?) {
+        TODO("Not yet implemented")
+    }
 }
