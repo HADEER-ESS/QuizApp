@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.androidquizapp.databinding.ActivityQuizQuestionBinding
 import com.google.gson.Gson
@@ -60,31 +61,25 @@ class QuizQuestionActivity : AppCompatActivity(){
         )
         binding.countryImageIv.setImageResource(image)
         binding.progressBarPb.progress = increment
+        binding.progressBarPb.max = questionsLength!!
         binding.progressCountTv.text = "$increment / ${binding.progressBarPb.max}"
         binding.optionOneTv.text = question.optionOne
         binding.optionTwoTv.text = question.optionTwo
         binding.optionThreeTv.text = question.optionThree
         binding.optionFourTv.text = question.optionFour
 
-        if(selectedOptionPosition == 0){
-            Log.e("Zero false" , "selected $selectedOptionPosition")
-            binding.answerBtn.isClickable = false
-        }
-        else{
-            binding.answerBtn.isClickable = true
-            Log.e("Zero true " , "selected $selectedOptionPosition")
-            binding.answerBtn.setOnClickListener {
-                if(binding.answerBtn.text == "Next Question" && increment<questionsLength!!){
-                    binding.answerBtn.text = "Submit"
-                    selectedOptionPosition = 0
-                    defaultOptionClicked()
-                    ++increment
-                    displayQuestionOnScreen(questions!![increment-1])
-                }
-                else if(binding.answerBtn.text == "Finish" && increment == questionsLength!!){
-                    intent.putExtra("correctAnswers" , correctedAnswerCount)
-                    startActivity(intent)
-                }
+        binding.answerBtn.setOnClickListener {
+            if(binding.answerBtn.text == "Next Question" && increment<questionsLength!!){
+                binding.answerBtn.text = "Submit"
+                selectedOptionPosition = 0
+                defaultOptionClicked()
+                ++increment
+                displayQuestionOnScreen(questions!![increment-1])
+            }
+            else if(binding.answerBtn.text == "Finish" && increment == questionsLength!!){
+                intent.putExtra("correctAnswers" , correctedAnswerCount)
+                intent.putExtra("QuestionsNum" , questionsLength)
+                startActivity(intent)
             }
         }
     }
@@ -136,7 +131,8 @@ class QuizQuestionActivity : AppCompatActivity(){
             if(increment == questionsLength!!){
                 binding.answerBtn.text = "Finish"
             }
-        }else{
+        }
+        else{
             tv.background = ContextCompat.getDrawable(this , R.drawable.wrond_answer_option)
             displayCorrectOptionStyle(optionsArray[currentCorrectAnswerNum?.minus(1)!!])
             binding.answerBtn.text = "Next Question"
