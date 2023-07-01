@@ -18,9 +18,10 @@ class ResultScreenActivity : AppCompatActivity() {
         val intent = getIntent()
 
         val correctAnswersData: Int = intent.getIntExtra("correctAnswers" , 1)
+        val numOfQuestions : Int = intent.getIntExtra("QuestionsNum" , 1)
 
         Log.e("Answers " , "Correct Answers are $correctAnswersData")
-        binding.tvScoreCount.text = "$correctAnswersData / 7"
+        binding.tvScoreCount.text = "$correctAnswersData / $numOfQuestions"
         when(correctAnswersData){
             in 0..5 -> {
                 binding.tvWinState.text = "You Lose"
