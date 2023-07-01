@@ -6,21 +6,21 @@ import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.androidquizapp.databinding.ActivityQuizQuestionBinding
 import com.google.gson.Gson
 import java.io.InputStream
 import java.lang.Exception
 
-class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener{
+
+class QuizQuestionActivity : AppCompatActivity(){
     private var increment = 1;
     private var questionsLength :Int? = null
     private var questions : Array<QuestionSkeleton>? = null
     private var selectedOptionPosition : Int = 0
     var correctedAnswerCount: Int = 0;
+    private var optionsArray = ArrayList<TextView>()
 
     private lateinit var binding: ActivityQuizQuestionBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +34,7 @@ class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener{
         questionsLength = questions?.size
 
         displayQuestionOnScreen(questions!![increment-1])
-//        onOptionClicked()
+
         binding.optionOneTv.setOnClickListener {
             onSelectedOptionClicked((it as TextView), 1)
         }
@@ -66,34 +66,38 @@ class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener{
         binding.optionThreeTv.text = question.optionThree
         binding.optionFourTv.text = question.optionFour
 
-        binding.answerBtn.setOnClickListener {
-            if(selectedOptionPosition == question.correctAnswer){
-                correctedAnswerCount += 1
-                Log.i("Correct" , "YESSSSS $correctedAnswerCount")
+        if(selectedOptionPosition == 0){
+            Log.e("Zero false" , "selected $selectedOptionPosition")
+            binding.answerBtn.isClickable = false
+        }
+        else{
+            binding.answerBtn.isClickable = true
+            Log.e("Zero true " , "selected $selectedOptionPosition")
+            binding.answerBtn.setOnClickListener {
+                if(binding.answerBtn.text == "Next Question" && increment<questionsLength!!){
+                    binding.answerBtn.text = "Submit"
+                    selectedOptionPosition = 0
+                    defaultOptionClicked()
+                    ++increment
+                    displayQuestionOnScreen(questions!![increment-1])
+                }
+                else if(binding.answerBtn.text == "Finish" && increment == questionsLength!!){
+                    intent.putExtra("correctAnswers" , correctedAnswerCount)
+                    startActivity(intent)
+                }
             }
-            if(increment == questionsLength){
-                binding.answerBtn.text = "FINISH"
-                intent.putExtra("correctAnswers" , correctedAnswerCount)
-                startActivity(intent)
-            }else{
-                ++increment
-                displayQuestionOnScreen(questions!![increment-1])
-                binding.answerBtn.text = "SUBMIT"
-            }
-
         }
     }
 
-//    private fun correctAnswer (tv: TextView){
-//        tv.background = ContextCompat.getDrawable(
-//            this ,
-//            R.drawable.correct_answer_option
-//        )
-//    }
+    private fun displayCorrectOptionStyle(txt : TextView){
+        txt.background = ContextCompat.getDrawable(
+            this, R.drawable.correct_answer_option
+        )
+//        btn.text = "Next Question"
+    }
 
     //OnOptionClicked change the style of it
     private fun defaultOptionClicked() {
-        var optionsArray= ArrayList<TextView>()
 
         binding.optionOneTv.let {
             optionsArray.add(0, it)
@@ -119,11 +123,27 @@ class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener{
     private fun onSelectedOptionClicked (tv : TextView , selectedOptionNum : Int){
         defaultOptionClicked()
 
+        var currentCorrectAnswerNum : Int? = questions?.get(increment-1)?.correctAnswer
         selectedOptionPosition = selectedOptionNum
 
         tv.setTextColor(Color.parseColor("#363A43"))
         tv.setTypeface(tv.typeface , Typeface.BOLD)
         tv.background = ContextCompat.getDrawable(this , R.drawable.selected_option_container)
+        if(selectedOptionPosition == currentCorrectAnswerNum){
+            tv.background = ContextCompat.getDrawable(this , R.drawable.correct_answer_option)
+            correctedAnswerCount += 1
+            binding.answerBtn.text = "Next Question"
+            if(increment == questionsLength!!){
+                binding.answerBtn.text = "Finish"
+            }
+        }else{
+            tv.background = ContextCompat.getDrawable(this , R.drawable.wrond_answer_option)
+            displayCorrectOptionStyle(optionsArray[currentCorrectAnswerNum?.minus(1)!!])
+            binding.answerBtn.text = "Next Question"
+            if(increment == questionsLength!!){
+                binding.answerBtn.text = "Finish"
+            }
+        }
     }
 
     //Read JSON as STRING from Asset Folder
@@ -139,7 +159,4 @@ class QuizQuestionActivity : AppCompatActivity() , View.OnClickListener{
         return json!!
     }
 
-    override fun onClick(view: View?) {
-        TODO("Not yet implemented")
-    }
 }

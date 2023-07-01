@@ -17,7 +17,7 @@ class ResultScreenActivity : AppCompatActivity() {
         setContentView(binding.root)
         val intent = getIntent()
 
-        val correctAnswersData: Int = intent.getIntExtra("correctAnswersData" , 1)
+        val correctAnswersData: Int = intent.getIntExtra("correctAnswers" , 1)
 
         Log.e("Answers " , "Correct Answers are $correctAnswersData")
         binding.tvScoreCount.text = "$correctAnswersData / 7"
@@ -25,12 +25,15 @@ class ResultScreenActivity : AppCompatActivity() {
             in 0..5 -> {
                 binding.tvWinState.text = "You Lose"
                 binding.btnFinishButton.text = "Try Again"
+                binding.btnFinishButton.setOnClickListener {
+                    finish()
+                    exitProcess(0)
+                }
             }
             else -> {
                 binding.btnFinishButton.text = "Exit"
                 binding.btnFinishButton.setOnClickListener {
-                    finish()
-                    exitProcess(0)
+                    finishAffinity()
                 }
             }
         }
