@@ -5,4 +5,6 @@
     <color name="grey">#A7A7A7</color>
     <color name="Light_Blue">#00C4FF</color>
     <color name="top_Bar">#6DA9E4</color>
+    <color name="correct_green_color">#16FF00</color>
+    <color name="wrong_red_color">#FC2947</color>
 </resources>

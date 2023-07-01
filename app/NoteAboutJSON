@@ -1,0 +1,34 @@
+//was written in OnCreate method
+
+//        try {
+//            val obj = JSONObject(loadJSONFromAsset())
+//            val questions = obj.getJSONArray("questions")
+//
+//            for(i in 0 until questions.length()){
+//                val questionInfo = questions.getJSONObject(i)
+//                renderedData.add(questionInfo)
+////                println("QUESTION... $questionInfo")
+//            }
+//        }catch (ex :Exception){
+//            ex.printStackTrace()
+//        }
+
+//-----------------------------------------------------------------------------------
+
+    //Load JSON
+//    private fun loadJSONFromAsset():String{
+//        var json :String? = null
+//
+//        try {
+//            val inputStream :InputStream = assets.open("questions.json")
+//            val sizeData = inputStream.available()
+//            val buffer = ByteArray(sizeData)
+//            val charset :Charset = Charsets.UTF_8
+//            inputStream.read(buffer)
+//            inputStream.close()
+//            json = String(buffer , charset)
+//        }catch (ex : Exception){
+//            ex.printStackTrace()
+//        }
+//        return json!!
+//    }
